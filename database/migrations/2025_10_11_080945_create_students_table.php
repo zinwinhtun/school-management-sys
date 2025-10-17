@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('address');
+            $table->date('date_of_birth');
             $table->string('parent_name');
+            $table->boolean('fee_paid')->default(false);
             $table->timestamps();
 
             $table->foreign('class_id')->references('id')->on('class_types')->onDelete('cascade');

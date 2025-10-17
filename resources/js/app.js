@@ -1,12 +1,10 @@
-import './bootstrap';
+// Simple Bootstrap import - remove all manual initialization
+import 'bootstrap';
 
-import Alpine from 'alpinejs';
+console.log('Bootstrap JavaScript loaded successfully');
 
-import Swal from 'sweetalert2';
-
-window.Alpine = Alpine;
-
-Alpine.start();
-
-window.Swal = Swal;
-
+// Just a simple DOM ready check
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM fully loaded');
+    console.log('Bootstrap version:', bootstrap ? 'Loaded' : 'Not loaded');
+});

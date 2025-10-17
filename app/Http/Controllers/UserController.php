@@ -4,56 +4,43 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Repository\UserRepository;
+use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 
 class UserController extends Controller
 {
-    protected $model;
+    protected $repo;
 
-    public function __construct(User $model)
+    public function __construct(UserRepository $repo)
     {
-        $this->model = $model;
+        $this->repo = $repo;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = $this->model->latest()->paginate(10);
-        return view('Pages.User.index', compact('users'));
+        $search = $request->input('search');
+        $users = $this->repo->getAll($search, 5);
+
+        return view('Pages.User.index', compact('users', 'search'));
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'role' => 'required|string',
-            'password' => 'required|confirmed|min:6',
-        ]);
-
-        $validated['password'] = $validated['password'];
-        $this->model->create($validated);
-
+        $this->repo->create($request->validated());
         return redirect()->route('users.index')->with('success', 'User created successfully!');
     }
 
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'role' => 'required|string',
-        ]);
-
-        if ($request->filled('password')) {
-            $validated['password'] = $request->password;
-        }
-
-        $user->update($validated);
+        $this->repo->update($user, $request->validated());
         return redirect()->route('users.index')->with('success', 'User updated successfully!');
     }
 
     public function destroy(User $user)
     {
-        $user->delete();
+        $this->repo->delete($user);
         return redirect()->route('users.index')->with('success', 'User deleted successfully!');
     }
 }

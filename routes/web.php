@@ -10,10 +10,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    if(Auth::user()->role == 'admin'){
-        return view('Pages.dashboard');
-    }
-    return view('main');
+    return view('Pages.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

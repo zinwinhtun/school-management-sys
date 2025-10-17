@@ -4,8 +4,23 @@ import laravel from 'laravel-vite-plugin';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js'
+            ],
             refresh: true,
         }),
     ],
+    // Add server configuration
+    server: {
+        hmr: {
+            overlay: false
+        }
+    },
+    // Optimize the build
+    build: {
+        rollupOptions: {
+            external: []
+        }
+    }
 });
