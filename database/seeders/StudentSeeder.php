@@ -19,6 +19,7 @@ class StudentSeeder extends Seeder
             'name' => 'Mg Mg',
             'phone' => '09-87654321',
             'address' => '123 Main St',
+            'date_of_birth' => '2000-01-01',
             'parent_name' => 'U Ba',
         ]);
 
@@ -28,6 +29,7 @@ class StudentSeeder extends Seeder
             'name' => 'Jane Marry',
             'phone' => '09-12345678',
             'address' => '456 Elm St',
+            'date_of_birth' => '1999-12-31',
             'parent_name' => 'Mr.Dean Smith',
         ]);
     }

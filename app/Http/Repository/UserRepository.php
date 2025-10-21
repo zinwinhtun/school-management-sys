@@ -31,14 +31,14 @@ class UserRepository
 
     public function create(array $data)
     {
-        $data['password'] = bcrypt($data['password']);
+        $data['password'] = $data['password'];
         return $this->model->create($data);
     }
 
     public function update(User $user, array $data)
     {
         if (!empty($data['password'])) {
-            $data['password'] = bcrypt($data['password']);
+            $data['password'] = $data['password'];
         } else {
             unset($data['password']);
         }

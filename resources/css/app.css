@@ -1,6 +1,6 @@
-/* Simple Bootstrap import */
 @import 'bootstrap';
 @import 'bootstrap-icons';
+@import 'toastr/build/toastr.css'; 
 
 /* Custom styles - keep it minimal */
 .bg-indigo {
@@ -60,4 +60,3 @@ body {
     border-color: #dee2e6;
 }
 
-@import 'bootstrap-icons/font/bootstrap-icons.css';
