@@ -162,7 +162,7 @@
                 <div class="card-body">
                     <div class="row g-3">
                         <div class="col-6 col-sm-4 col-md-2">
-                            <a href="#" class="btn btn-outline-primary w-100 h-100 py-3 d-flex flex-column align-items-center">
+                            <a href="{{route('student.create')}}" class="btn btn-outline-primary w-100 h-100 py-3 d-flex flex-column align-items-center">
                                 <i class="bi bi-person-plus fs-4 mb-2"></i>
                                 <small>Add Student</small>
                             </a>

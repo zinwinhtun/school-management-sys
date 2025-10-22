@@ -11,7 +11,7 @@ class CreateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|min:3|max:255',
+            'class_id' => 'required|exists:class_types,id',
+            'phone' => 'required|string|min:3|max:255',
+            'parent_name' => 'required|string|min:3|max:255',
+            'date_of_birth' => 'required|date',
+            'address' => 'required|string|min:3|max:255',
         ];
     }
 }

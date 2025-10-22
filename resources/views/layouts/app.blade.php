@@ -23,9 +23,6 @@
                 <a href="{{ route('users.index') }}" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
                     <i class="bi bi-people me-2"></i>Users
                 </a>
-                <a href="#" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
-                    <i class="bi bi-clipboard2-data me-2"></i>Class
-                </a>
                 <a href="{{ route('student.index') }}" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
                     <i class="bi bi-person-vcard me-2"></i>Students
                 </a>
@@ -103,7 +100,7 @@
                 <a href="{{ route('users.index') }}" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
                     <i class="bi bi-people me-2"></i>Users
                 </a>
-                <a href="#" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
+                <a href="{{ route('student.index') }}" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
                     <i class="bi bi-person-vcard me-2"></i>Students
                 </a>
                 <a href="#" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">

@@ -22,7 +22,12 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'sometimes|string|min:3|max:255',
+            'class_id' => 'sometimes|exists:class_types,id',
+            'phone' => 'sometimes|string|min:3|max:255',
+            'parent_name' => 'sometimes|string|min:3|max:255',
+            'date_of_birth' => 'sometimes|date',
+            'address' => 'sometimes|string|min:3|max:255',
         ];
     }
 }

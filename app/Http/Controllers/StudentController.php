@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Student\CreateRequest;
+use App\Http\Requests\Student\UpdateRequest;
 use App\Models\ClassType;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -39,7 +41,48 @@ class StudentController extends Controller
 
     public function create()
     {
-        $classes = ClassType::all();
-        return view('Pages.Student.create',compact('classes'));
+        $classes = ClassType::get();
+        return view('Pages.Student.create', compact('classes'));
+    }
+
+    public function store(CreateRequest $request)
+    {
+        try {
+            $data = $request->validated();
+            $this->model->create($data);
+            return redirect()->route('student.index')->with('success', 'Student created successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('student.index')->with('error', $e->getMessage());
+        }
+    }
+
+    public function edit($id)
+    {
+        $student = $this->model->findOrFail($id);
+        $classes = ClassType::get();
+        return view('Pages.Student.edit', compact('student', 'classes'));
+    }
+
+    public function update(UpdateRequest $request, $id)
+    {
+        try {
+            $student = $this->model->findOrFail($id);
+            $data = $request->validated();
+            $student->update($data);
+            return redirect()->route('student.index')->with('success', 'Student updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('student.index')->with('error', $e->getMessage());
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $student = $this->model->findOrFail($id);
+            $student->delete();
+            return redirect()->route('student.index')->with('success', 'Student deleted successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('student.index')->with('error', $e->getMessage());
+        }
     }
 }
