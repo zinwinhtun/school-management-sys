@@ -11,6 +11,13 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+
+    public function show(Request $request): View
+    {
+        return view('Pages.Profile.detail', [
+            'user' => $request->user(),
+        ]);
+    }
     /**
      * Display the user's profile form.
      */
@@ -26,15 +33,19 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        try {
+            $request->user()->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+            if ($request->user()->isDirty('email')) {
+                $request->user()->email_verified_at = null;
+            }
+
+            $request->user()->save();
+
+            return redirect()->back()->with('status', 'profile updated successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
-
-        $request->user()->save();
-
-        return redirect()->back()->with('status', 'profile-updated');
     }
 
     /**

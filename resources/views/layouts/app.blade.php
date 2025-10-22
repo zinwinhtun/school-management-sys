@@ -1,144 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
+    <!-- Vite Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-100 min-h-screen flex">
+<body class="bg-light min-vh-100 d-flex">
+
     <!-- Sidebar -->
-    <aside class="bg-indigo-700 text-white w-64 min-h-screen hidden md:flex flex-col justify-between">
+    <aside class="bg-indigo text-white d-none d-md-flex flex-column justify-between" style="width: 260px;">
         <div>
-            <div class="p-4 text-center font-bold text-lg border-b border-indigo-500">GLORY</div>
-            <nav class="mt-4 space-y-2">
-                <a href="{{route('dashboard')}}" class="block py-2.5 px-4 hover:bg-indigo-600">Dashboard</a>
-                <a href="{{route('users.index')}}" class="block py-2.5 px-4 hover:bg-indigo-600">Users</a>
-                <a href="#" class="block py-2.5 px-4 hover:bg-indigo-600">Students</a>
-                <a href="#" class="block py-2.5 px-4 hover:bg-indigo-600">Fees</a>
-                <a href="#" class="block py-2.5 px-4 hover:bg-indigo-600">Books</a>
-                <a href="#" class="block py-2.5 px-4 hover:bg-indigo-600">Expenses</a>
-                <a href="#" class="block py-2.5 px-4 hover:bg-indigo-600">Reports</a>
+            <div class="p-4 text-center fw-bold fs-5 border-bottom border-indigo-400">GLORY</div>
+            <nav class="mt-4">
+                <a href="{{ route('dashboard') }}" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
+                    <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                </a>
+                <a href="{{ route('users.index') }}" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
+                    <i class="bi bi-people me-2"></i>Users
+                </a>
+                <a href="{{ route('student.index') }}" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
+                    <i class="bi bi-person-vcard me-2"></i>Students
+                </a>
+                <a href="#" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
+                    <i class="bi bi-cash-coin me-2"></i>Fees
+                </a>
+                <a href="#" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
+                    <i class="bi bi-journal-text me-2"></i>Books
+                </a>
+                <a href="#" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
+                    <i class="bi bi-graph-down me-2"></i>Expenses
+                </a>
+                <a href="#" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
+                    <i class="bi bi-bar-chart me-2"></i>Reports
+                </a>
             </nav>
         </div>
-        <div class="p-4 border-t border-indigo-600 text-sm text-gray-200">
-            <p>&copy; {{ date('Y') }} SchoolSystem</p>
+        <div class="p-4 border-top border-indigo-400">
+            <p class="mb-0 text-light">&copy; {{ date('Y') }} SchoolSystem</p>
         </div>
     </aside>
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col">
+    <div class="flex-grow-1 d-flex flex-column">
         <!-- Top Navbar -->
-        <nav class="bg-white shadow-md p-4 flex justify-between items-center">
-            <button id="sidebarToggle" class="md:hidden text-indigo-600">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5M3.75 12h16.5m-16.5 6.75h16.5" />
-                </svg>
+        <nav class="bg-white shadow-sm p-3 d-flex justify-content-between align-items-center">
+            <button class="btn btn-outline-indigo d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
+                <i class="bi bi-list"></i>
             </button>
-            <h1 class="text-lg font-semibold text-gray-700">School Management System</h1>
+
+            <h1 class="h5 fw-semibold text-dark mb-0 d-none d-sm-block">School Management System</h1>
+            <h1 class="h6 fw-semibold text-dark mb-0 d-sm-none">SMS</h1>
+
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
-
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <x-dropdown-link>
-                            {{ Auth::user()->email}}
-                        </x-dropdown-link>
-
-                        <!-- Open Profile Modal -->
-                        <x-dropdown-link href="#" @click.prevent="$dispatch('open-profile-modal')">
-                            {{ __('Profile Setting') }}
-                        </x-dropdown-link>
-
-                        <x-dropdown-link href="#" @click.prevent="$dispatch('open-password-modal')">
-                            {{ __('Change Password') }}
-                        </x-dropdown-link>
-
-
-                        <!-- Authentication -->
+            <div class="dropdown">
+                <button class="btn btn-outline-indigo dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-gear-fill"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li class="dropdown-header text-muted small">{{ Auth::user()->email }}</li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item" href="{{ route('profile.show') }}">
+                            <i class="bi bi-person me-2"></i>Profile
+                        </a>
+                    </li>
+                    <li>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
-                            <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
+                            <button type="submit" class="dropdown-item">
+                                <i class="bi bi-box-arrow-right me-2"></i>Log Out
+                            </button>
                         </form>
-                    </x-slot>
-                </x-dropdown>
+                    </li>
+                </ul>
             </div>
         </nav>
 
-        <main class="p-5">
+        <main class="p-4 flex-grow-1">
             @yield('content')
         </main>
     </div>
 
-    <!-- Mobile Sidebar Overlay -->
-    <div id="mobileSidebar" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40">
-        <aside class="bg-indigo-700 text-white w-64 h-full p-4">
-            <button id="closeSidebar" class="mb-4 text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-            <nav class="space-y-2">
-                <a href="{{route('dashboard')}}" class="block py-2 px-3 hover:bg-indigo-600 rounded">Dashboard</a>
-                <a href="{{route('users.index')}}" class="block py-2.5 px-4 hover:bg-indigo-600">Users</a>
-                <a href="#" class="block py-2 px-3 hover:bg-indigo-600 rounded">Students</a>
-                <a href="#" class="block py-2 px-3 hover:bg-indigo-600 rounded">Fees</a>
-                <a href="#" class="block py-2 px-3 hover:bg-indigo-600 rounded">Books</a>
-                <a href="#" class="block py-2 px-3 hover:bg-indigo-600 rounded">Expenses</a>
-                <a href="#" class="block py-2 px-3 hover:bg-indigo-600 rounded">Reports</a>
+    <!-- Mobile Sidebar -->
+    <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="mobileSidebar">
+        <div class="offcanvas-header bg-indigo text-white">
+            <h5 class="offcanvas-title">GLORY</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body bg-indigo text-white p-0">
+            <nav class="nav flex-column">
+                <a href="{{ route('dashboard') }}" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
+                    <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                </a>
+                <a href="{{ route('users.index') }}" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
+                    <i class="bi bi-people me-2"></i>Users
+                </a>
+                <a href="{{ route('student.index') }}" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
+                    <i class="bi bi-person-vcard me-2"></i>Students
+                </a>
+                <a href="#" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
+                    <i class="bi bi-cash-coin me-2"></i>Fees
+                </a>
+                <a href="#" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
+                    <i class="bi bi-bar-chart me-2"></i>Reports
+                </a>
+                <a href="{{ route('profile.show') }}" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
+                    <i class="bi bi-gear me-2"></i>Setting
+                </a>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button class=" py-2 px-3 hover:bg-indigo-600 rounded">Logout</button>
+                    <button type="submit" class="nav-link text-white py-3 px-4 text-start w-100 bg-transparent border-0">
+                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                    </button>
                 </form>
             </nav>
-        </aside>
+        </div>
     </div>
 
-    <!-- Profile Edit Modal -->
-    <x-profile-modal />
-
-    <!-- Change Password Modal -->
-    <x-change-password-popup />
-
-
+    <!-- Scripts -->
     <script>
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const mobileSidebar = document.getElementById('mobileSidebar');
-        const closeSidebar = document.getElementById('closeSidebar');
+        document.addEventListener('DOMContentLoaded', function () {
+            // Hover effect for sidebar
+            document.querySelectorAll('.hover-bg-indigo').forEach(link => {
+                link.addEventListener('mouseenter', () => link.style.backgroundColor = 'rgba(255,255,255,0.1)');
+                link.addEventListener('mouseleave', () => link.style.backgroundColor = '');
+            });
 
-        sidebarToggle.addEventListener('click', () => {
-            mobileSidebar.classList.remove('hidden');
-        });
+            // Toastr Session Messages
+            @if(session('success'))
+                toastr.success("{{ session('success') }}");
+            @endif
+            @if(session('error'))
+                toastr.error("{{ session('error') }}");
+            @endif
+            @if(session('warning'))
+                toastr.warning("{{ session('warning') }}");
+            @endif
+            @if(session('info'))
+                toastr.info("{{ session('info') }}");
+            @endif
 
-        closeSidebar.addEventListener('click', () => {
-            mobileSidebar.classList.add('hidden');
-        });
-
-        mobileSidebar.addEventListener('click', (e) => {
-            if (e.target === mobileSidebar) mobileSidebar.classList.add('hidden');
+            // Validation Errors
+            @if($errors->any())
+                @foreach($errors->all() as $error)
+                    toastr.error("{{ $error }}");
+                @endforeach
+            @endif
         });
     </script>
-</body>
 
+</body>
 </html>
