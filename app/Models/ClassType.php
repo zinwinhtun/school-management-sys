@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Book;
 use App\Models\Student;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,5 +17,10 @@ class ClassType extends Model
     public function students()
     {
         return $this->hasMany(Student::class);
+    }
+
+    public function books()
+    {
+        return $this->hasMany(Book::class, 'class_id');
     }
 }

@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->string('category');
-            $table->unsignedBigInteger('class_id');
+            $table->unsignedBigInteger('class_id')->nullable();
             $table->decimal('purchase_price', 12, 2);
-            $table->decimal('sale_price', 12, 2);
+            $table->decimal('sell_price', 12, 2);
             $table->integer('stock');
             $table->timestamps();
 
-            $table->foreign('class_id')->references('id')->on('class_types')->onDelete('cascade');
+            $table->foreign('class_id')->references('id')->on('class_types')->onDelete('set null');
         });
     }
 

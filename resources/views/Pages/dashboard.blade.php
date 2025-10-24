@@ -175,8 +175,8 @@
                         </div>
                         <div class="col-6 col-sm-4 col-md-2">
                             <a href="#" class="btn btn-outline-info w-100 h-100 py-3 d-flex flex-column align-items-center">
-                                <i class="bi bi-journal-plus fs-4 mb-2"></i>
-                                <small>Add Book</small>
+                                <i class="bi bi-cart-plus fs-4 mb-2"></i>
+                                <small>Sell Book</small>
                             </a>
                         </div>
                         <div class="col-6 col-sm-4 col-md-2">
@@ -192,7 +192,7 @@
                             </a>
                         </div>
                         <div class="col-6 col-sm-4 col-md-2">
-                            <a href="#" class="btn btn-outline-secondary w-100 h-100 py-3 d-flex flex-column align-items-center">
+                            <a href="{{route('profile.show')}}" class="btn btn-outline-secondary w-100 h-100 py-3 d-flex flex-column align-items-center">
                                 <i class="bi bi-gear fs-4 mb-2"></i>
                                 <small>Settings</small>
                             </a>

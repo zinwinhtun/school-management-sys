@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\ClassTypeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\ClassTypeController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -41,6 +42,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/{id}', [StudentController::class, 'edit'])->name('student.edit');
         Route::put('/update/{id}', [StudentController::class, 'update'])->name('student.update');
         Route::delete('/delete/{id}', [StudentController::class, 'destroy'])->name('student.destroy');
+    });
+
+    //Book 
+    Route::prefix('books')->group(function () {
+        Route::get('', [BookController::class, 'index'])->name('books.index');
+        Route::post('/books', [BookController::class, 'store'])->name('books.store');
+        Route::get('/books/{id}/edit', [BookController::class, 'edit'])->name('books.edit');
+        Route::put('/books/{id}', [BookController::class, 'update'])->name('books.update');
+        Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
     });
 
 });
