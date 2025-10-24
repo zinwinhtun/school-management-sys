@@ -15,19 +15,21 @@ class BookSeeder extends Seeder
     {
         Book::create([
             'id' => 1,
+            'name' => 'The Great Gatsby',
             'category' => 'Fiction',
             'class_id' => 1,
             'purchase_price' => 100,
-            'sale_price' => 150,
+            'sell_price' => 150,
             'stock' => 30
         ]);
 
         Book::create([
             'id' => 2,
+            'name' => 'To Kill a Mockingbird',
             'category' => 'Non-Fiction',
             'class_id' => 2,
             'purchase_price' => 200,
-            'sale_price' => 250,
+            'sell_price' => 250,
             'stock' => 50
         ]);
     }

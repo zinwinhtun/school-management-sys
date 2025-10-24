@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\ClassType;
 use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
@@ -9,10 +10,16 @@ class Book extends Model
     protected $table = 'books';
 
     protected $fillable = [
+        'name',
         'category',
         'class_id',
         'purchase_price',
-        'sale_price',
+        'sell_price',
         'stock',
     ];
+
+    public function classType()
+    {
+        return $this->belongsTo(ClassType::class, 'class_id');
+    }
 }
