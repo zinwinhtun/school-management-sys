@@ -14,15 +14,23 @@
             </div>
 
             <div class="col-12 col-md-4 d-flex flex-wrap justify-content-center justify-content-md-end gap-2">
+                {{-- Add New Book --}}
                 <button type="button" class="btn btn-primary d-flex align-items-center"
                     data-bs-toggle="modal" data-bs-target="#createBookModal">
                     <i class="bi bi-plus-circle me-2"></i> Add New Book
                 </button>
 
-                <a href="#" class="btn btn-primary d-flex align-items-center fw-semibold">
+                {{-- Sell Book --}}
+                <a href="{{ route('books.sellForm') }}" class="btn btn-primary d-flex align-items-center fw-semibold">
                     <i class="bi bi-cart4 me-2"></i> Sell Book
                 </a>
+
+                {{-- Sell History --}}
+                <a href="{{ route('books.sellHistory') }}" class="btn btn-primary d-flex align-items-center fw-semibold">
+                    <i class="bi bi-clock-history me-2"></i> Sell History
+                </a>
             </div>
+
         </div>
     </div>
 

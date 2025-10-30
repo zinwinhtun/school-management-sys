@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -63,7 +64,9 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li class="dropdown-header text-muted small">{{ Auth::user()->email }}</li>
-                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
                     <li>
                         <a class="dropdown-item" href="{{ route('profile.show') }}">
                             <i class="bi bi-person me-2"></i>Profile
@@ -81,7 +84,7 @@
             </div>
         </nav>
 
-        <main class="p-4 flex-grow-1">
+        <main class="flex-grow-1 p-3 p-md-4 overflow-auto">
             @yield('content')
         </main>
     </div>
@@ -108,25 +111,25 @@
                 </a>
                 <a href="{{route('books.index')}}" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
                     <i class="bi bi-journal-text me-2"></i>Books
-                <a href="#" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
-                    <i class="bi bi-bar-chart me-2"></i>Reports
-                </a>
-                <a href="{{ route('profile.show') }}" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
-                    <i class="bi bi-gear me-2"></i>Setting
-                </a>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="nav-link text-white py-3 px-4 text-start w-100 bg-transparent border-0">
-                        <i class="bi bi-box-arrow-right me-2"></i>Logout
-                    </button>
-                </form>
+                    <a href="#" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
+                        <i class="bi bi-bar-chart me-2"></i>Reports
+                    </a>
+                    <a href="{{ route('profile.show') }}" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
+                        <i class="bi bi-gear me-2"></i>Setting
+                    </a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="nav-link text-white py-3 px-4 text-start w-100 bg-transparent border-0">
+                            <i class="bi bi-box-arrow-right me-2"></i>Logout
+                        </button>
+                    </form>
             </nav>
         </div>
     </div>
 
     <!-- Scripts -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Hover effect for sidebar
             document.querySelectorAll('.hover-bg-indigo').forEach(link => {
                 link.addEventListener('mouseenter', () => link.style.backgroundColor = 'rgba(255,255,255,0.1)');
@@ -135,27 +138,28 @@
 
             // Toastr Session Messages
             @if(session('success'))
-                toastr.success("{{ session('success') }}");
+            toastr.success("{{ session('success') }}");
             @endif
             @if(session('error'))
-                toastr.error("{{ session('error') }}");
+            toastr.error("{{ session('error') }}");
             @endif
             @if(session('warning'))
-                toastr.warning("{{ session('warning') }}");
+            toastr.warning("{{ session('warning') }}");
             @endif
             @if(session('info'))
-                toastr.info("{{ session('info') }}");
+            toastr.info("{{ session('info') }}");
             @endif
 
             // Validation Errors
             @if($errors->any())
-                @foreach($errors->all() as $error)
-                    toastr.error("{{ $error }}");
-                @endforeach
+            @foreach($errors->all() as $error)
+            toastr.error("{{ $error }}");
+            @endforeach
             @endif
         });
     </script>
     <!-- some js code in here  -->
     @stack('scripts')
 </body>
+
 </html>

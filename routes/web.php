@@ -47,13 +47,19 @@ Route::middleware('auth')->group(function () {
     //Book 
     Route::prefix('books')->group(function () {
         Route::get('', [BookController::class, 'index'])->name('books.index');
-        Route::post('/books', [BookController::class, 'store'])->name('books.store');
-        Route::get('/books/{id}/edit', [BookController::class, 'edit'])->name('books.edit');
-        Route::put('/books/{id}', [BookController::class, 'update'])->name('books.update');
-        Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
-    });
+        Route::post('/', [BookController::class, 'store'])->name('books.store');
+        Route::get('/{id}/edit', [BookController::class, 'edit'])->name('books.edit');
+        Route::put('/{id}', [BookController::class, 'update'])->name('books.update');
+        Route::delete('/{id}', [BookController::class, 'destroy'])->name('books.destroy');
+        Route::get('/sell', [BookController::class, 'sellForm'])->name('books.sellForm');
+        Route::post('/add-to-session', [BookController::class, 'addToSession'])->name('books.addToSession');
+        Route::post('/sell', [BookController::class, 'sell'])->name('books.sell');
+        Route::post('/sell/clear', [BookController::class, 'clearCart'])->name('books.clearCart');
+        Route::get('/sell/remove/{index}', [BookController::class, 'removeFromSession'])->name('books.removeFromSession');
+        Route::get('/sell-history', [BookController::class, 'sellHistory'])->name('books.sellHistory');
 
+    });
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
