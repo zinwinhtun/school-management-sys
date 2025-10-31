@@ -12,5 +12,6 @@ class Expenses extends Model
         'user_id',
         'title',
         'amount',
+        'note',
     ];
 }

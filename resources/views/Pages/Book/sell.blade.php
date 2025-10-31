@@ -11,62 +11,74 @@
 
         <div class="card-body">
             {{-- Add Book Form --}}
-            <form id="addForm" action="{{ route('books.addToSession') }}" method="POST" class="row g-3 needs-validation p-3 bg-light rounded shadow-sm" novalidate>
+            <form id="addForm"
+                action="{{ route('books.addToSession') }}"
+                method="POST"
+                class="p-4 bg-white rounded-4 shadow-sm needs-validation"
+                novalidate>
                 @csrf
 
-                {{-- Student --}}
-                <div class="col-lg-4 col-md-6 col-12">
-                    <label for="student_id" class="form-label fw-semibold">Student</label>
-                    <input type="text" class="form-control mb-1" id="studentSearch" placeholder="Search student name...">
-                    <select name="student_id" id="studentDropdown" class="form-select @error('student_id') is-invalid @enderror" required>
-                        <option value="">Select student...</option>
-                        @foreach ($students as $student)
-                        <option value="{{ $student->id }}"
-                            {{ session('student_id') == $student->id ? 'selected' : '' }}>
-                            {{ $student->name }}
-                        </option>
-                        @endforeach
-                    </select>
-                    @error('student_id')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+                <div class="d-flex flex-wrap gap-3 align-items-end">
 
-                {{-- Book --}}
-                <div class="col-lg-3 col-md-6 col-12">
-                    <label for="book_id" class="form-label fw-semibold">Book</label>
-                    <select name="book_id" id="book_id" class="form-select @error('book_id') is-invalid @enderror" required>
-                        <option value="">Select book...</option>
-                        @foreach ($books as $book)
-                        <option value="{{ $book->id }}" data-price="{{ $book->sell_price }}">
-                            {{ $book->name }} ({{ number_format($book->sell_price, 2) }} Ks)
-                        </option>
-                        @endforeach
-                    </select>
-                    @error('book_id')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+                    {{-- Student --}}
+                    <div class="flex-grow-1" style="min-width: 250px;">
+                        <label for="student_id" class="form-label fw-semibold">Student</label>
+                        <input type="text" class="form-control mb-2" id="studentSearch" placeholder="Search student name...">
+                        <select name="student_id" id="studentDropdown"
+                            class="form-select @error('student_id') is-invalid @enderror" required>
+                            <option value="">Select student...</option>
+                            @foreach ($students as $student)
+                            <option value="{{ $student->id }}"
+                                {{ session('student_id') == $student->id ? 'selected' : '' }}>
+                                {{ $student->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                        @error('student_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                {{-- Quantity --}}
-                <div class="col-lg-2 col-md-4 col-6">
-                    <label for="quantity" class="form-label fw-semibold">Qty</label>
-                    <input type="number" name="quantity" id="quantity" class="form-control @error('quantity') is-invalid @enderror" min="1" required>
-                    @error('quantity')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+                    {{-- Book --}}
+                    <div style="min-width: 200px; flex: 1 1 200px;">
+                        <label for="book_id" class="form-label fw-semibold">Book</label>
+                        <select name="book_id" id="book_id"
+                            class="form-select @error('book_id') is-invalid @enderror" required>
+                            <option value="">Select book...</option>
+                            @foreach ($books as $book)
+                            <option value="{{ $book->id }}" data-price="{{ $book->sell_price }}">
+                                {{ $book->name }} ({{ number_format($book->sell_price, 2) }} Ks)
+                            </option>
+                            @endforeach
+                        </select>
+                        @error('book_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                {{-- Add button --}}
-                <div class="col-lg-3 col-md-2 col-6 d-flex align-items-end">
-                    <button type="submit" class="btn btn-success w-100 py-2 shadow-sm">
-                        <i class="bi bi-plus-circle me-1"></i> Add Book
-                    </button>
+                    {{-- Quantity --}}
+                    <div style="max-width: 120px; flex: 0 1 120px;">
+                        <label for="quantity" class="form-label fw-semibold">Qty</label>
+                        <input type="number" name="quantity" id="quantity"
+                            class="form-control @error('quantity') is-invalid @enderror"
+                            min="1" required>
+                        @error('quantity')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    {{-- Add Button --}}
+                    <div style="flex: 0 1 160px;">
+                        <button type="submit"
+                            class="btn btn-success w-100 py-2 shadow-sm fw-semibold d-flex justify-content-center align-items-center">
+                            <i class="bi bi-plus-circle me-2"></i> Add Book
+                        </button>
+                    </div>
                 </div>
             </form>
 
 
-            <hr>
+            <hr class="my-4 text-muted">
 
             {{-- Cart Table --}}
             <div class="table-responsive">
@@ -174,11 +186,11 @@
         });
     });
 
-    (function () {
+    (function() {
         'use strict'
         var forms = document.querySelectorAll('.needs-validation')
-        Array.prototype.slice.call(forms).forEach(function (form) {
-            form.addEventListener('submit', function (event) {
+        Array.prototype.slice.call(forms).forEach(function(form) {
+            form.addEventListener('submit', function(event) {
                 if (!form.checkValidity()) {
                     event.preventDefault()
                     event.stopPropagation()
@@ -193,7 +205,7 @@
         let filter = this.value.toLowerCase()
         let options = document.querySelectorAll('#studentDropdown option')
         options.forEach(opt => {
-            if(opt.text.toLowerCase().includes(filter) || opt.value === "") {
+            if (opt.text.toLowerCase().includes(filter) || opt.value === "") {
                 opt.style.display = ''
             } else {
                 opt.style.display = 'none'
