@@ -5,15 +5,17 @@
 
     <!-- Header -->
     <div class="container-fluid mb-4 px-3">
-        <div class="row align-items-center gy-2">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
 
-            <div class="col-12 col-md-8 text-center text-md-start">
+            <!-- Left Title -->
+            <div class="text-center text-md-start">
                 <h2 class="fw-bold text-primary mb-0">
                     <i class="bi bi-book-half me-2"></i> Books List
                 </h2>
             </div>
 
-            <div class="col-12 col-md-4 d-flex flex-wrap justify-content-center justify-content-md-end gap-2">
+            <!-- Right Buttons -->
+            <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2">
                 {{-- Add New Book --}}
                 <button type="button" class="btn btn-primary d-flex align-items-center"
                     data-bs-toggle="modal" data-bs-target="#createBookModal">
@@ -33,6 +35,7 @@
 
         </div>
     </div>
+
 
     <!-- Card -->
     <div class="card shadow-sm border-0 rounded-4">
@@ -170,5 +173,6 @@
     </div>
 
 </div>
-@include('Pages.Book.create');
+@include('Pages.Book.create')
+
 @endsection

@@ -123,13 +123,31 @@ class BookController extends Controller
         return redirect()->route('books.sellForm')->with('success', 'Cart cleared successfully!');
     }
 
-    public function sellHistory()
+    public function sellHistory(Request $request)
     {
-        // Eager load student and book to avoid N+1 problem
-        $sells = \App\Models\BookSell::with(['student', 'book'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10); // Pagination 10 per page
+        $query = BookSell::with(['student', 'book']);
 
-        return view('Pages.Book.history', compact('sells'));
+        // Filters
+        if ($request->filled('student_id')) {
+            $query->where('student_id', $request->student_id);
+        }
+
+        if ($request->filled('book_id')) {
+            $query->where('book_id', $request->book_id);
+        }
+
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('created_at', [
+                $request->start_date . ' 00:00:00',
+                $request->end_date . ' 23:59:59'
+            ]);
+        }
+
+        $sells = $query->orderBy('created_at', 'desc')->paginate(6);
+
+        $students = Student::all();
+        $books = Book::all();
+
+        return view('Pages.Book.history', compact('sells', 'students', 'books'));
     }
 }
