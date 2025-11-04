@@ -33,7 +33,7 @@
                 <a href="{{route('books.index')}}" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
                     <i class="bi bi-journal-text me-2"></i>Books
                 </a>
-                <a href="#" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
+                <a href="{{route('expenses.index')}}" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
                     <i class="bi bi-graph-down me-2"></i>Expenses
                 </a>
                 <a href="#" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
@@ -111,9 +111,13 @@
                 </a>
                 <a href="{{route('books.index')}}" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
                     <i class="bi bi-journal-text me-2"></i>Books
-                    <a href="#" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
+                </a>
+                <a href="{{route('expenses.index')}}" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
+                    <i class="bi bi-graph-down me-2"></i>Expenses
+                </a>
+                <a href="#" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
                         <i class="bi bi-bar-chart me-2"></i>Reports
-                    </a>
+                </a>
                     <a href="{{ route('profile.show') }}" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
                         <i class="bi bi-gear me-2"></i>Setting
                     </a>
