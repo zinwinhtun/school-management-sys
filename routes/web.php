@@ -62,6 +62,12 @@ Route::middleware('auth')->group(function () {
 
     //Expense
     Route::resource('expenses', ExpenseController::class);
+
+    //Fee Collection
+    Route::prefix('fees')->group(function () {
+        Route::get('/', [ExpenseController::class, 'index'])->name('fees.index');
+        Route::post('/store', [ExpenseController::class, 'store'])->name('fees.store');
+    });
 });
 
 

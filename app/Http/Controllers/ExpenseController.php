@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Repository\ExpenseRepository;
 use App\Http\Requests\Expense\CreateRequest;
+use App\Http\Requests\Expense\UpdateRequest;
+use App\Models\Expenses;
 
 class ExpenseController extends Controller
 {
@@ -41,12 +43,12 @@ class ExpenseController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        try{
+        try {
             $data = $request->validated();
             $data['user_id'] = Auth::id();
             $this->expenseRepo->create($data);
             return redirect()->route('expenses.index')->with('success', 'Expense created successfully.');
-        }catch(\Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('expenses.create')->with('error', $e->getMessage());
         }
     }
@@ -64,15 +66,23 @@ class ExpenseController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $expense = Expenses::find($id);
+        return view('Pages.Expense.edit', compact('expense'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request, string $id)
     {
-        //
+        try {
+            $validate = $request->validated();
+            $validate['user_id'] = Auth::id();
+            $this->expenseRepo->update($validate,$id);
+            return redirect()->route('expenses.index')->with('success', 'Expense Updated successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -80,6 +90,7 @@ class ExpenseController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->expenseRepo->delete($id);
+        return redirect()->route('expenses.index')->with('success', 'Expense Deleted successfully.');
     }
 }

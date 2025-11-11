@@ -85,7 +85,7 @@
                                 </td>
 
                                 <td><span class="fw-semibold text-primary">{{ number_format($expense->amount, 0) }} MMK</span></td>
-                                <td><span class="text-muted small">{{ \Illuminate\Support\Str::limit($expense->note, 40) ?? '-' }}</span></td>
+                                <td><span class="text-muted small">{{ \Illuminate\Support\Str::limit($expense->note, 20) ?? '-' }}</span></td>
                                 <td><span class="text-muted small">{{ $expense->created_at->format('Y-m-d') }}</span></td>
 
                                 <td class="text-center">
@@ -93,7 +93,7 @@
                                         <!-- Edit -->
                                         <a href="{{ route('expenses.edit', $expense->id) }}"
                                             class="btn btn-outline-warning btn-sm d-flex align-items-center justify-content-center"
-                                            data-bs-toggle="tooltip" title="Edit">
+                                            title="Edit">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
 

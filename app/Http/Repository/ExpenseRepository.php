@@ -35,4 +35,22 @@ class ExpenseRepository {
         }
     }
 
+    public function update(array $validate , string $id)
+    {
+        try{
+            return $this->model::whereId($id)->update($validate);
+        }catch(\Exception $e) {
+            return redirect()->route('expenses.index')->with('error', $e->getMessage());
+        }
+    }
+
+    public function delete($id)
+    {
+        try{
+            return $this->model::whereId($id)->delete();
+        }catch(\Exception $e) {
+            return redirect()->route('expenses.index')->with('error', $e->getMessage());
+        }
+    }
+
 }
