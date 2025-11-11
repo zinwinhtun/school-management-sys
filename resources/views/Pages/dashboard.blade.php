@@ -180,15 +180,15 @@
                             </a>
                         </div>
                         <div class="col-6 col-sm-4 col-md-2">
-                            <a href="#" class="btn btn-outline-warning w-100 h-100 py-3 d-flex flex-column align-items-center">
+                            <a href="{{route('expenses.create')}}" class="btn btn-outline-warning w-100 h-100 py-3 d-flex flex-column align-items-center">
                                 <i class="bi bi-receipt fs-4 mb-2"></i>
-                                <small>Expenses</small>
+                                <small>Add Expenses</small>
                             </a>
                         </div>
                         <div class="col-6 col-sm-4 col-md-2">
                             <a href="#" class="btn btn-outline-danger w-100 h-100 py-3 d-flex flex-column align-items-center">
                                 <i class="bi bi-file-text fs-4 mb-2"></i>
-                                <small>Reports</small>
+                                <small>See Reports</small>
                             </a>
                         </div>
                         <div class="col-6 col-sm-4 col-md-2">

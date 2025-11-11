@@ -8,11 +8,11 @@
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
 
             <!-- Left Title -->
-            <div class="text-center text-md-start">
-                <h2 class="fw-bold text-primary mb-0">
-                    <i class="bi bi-book-half me-2"></i> Books List
-                </h2>
-            </div>
+            <div class="d-flex align-items-center justify-content-center justify-content-sm-start">
+                    <h2 class="fw-bold text-primary mb-0 d-flex align-items-center">
+                        <i class="bi bi-book-half me-2"></i> Books List
+                    </h2>
+                </div>
 
             <!-- Right Buttons -->
             <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2">

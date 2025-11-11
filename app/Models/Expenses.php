@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Expenses extends Model
@@ -14,4 +15,9 @@ class Expenses extends Model
         'amount',
         'note',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
