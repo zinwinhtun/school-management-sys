@@ -27,7 +27,7 @@
                 <a href="{{ route('student.index') }}" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
                     <i class="bi bi-person-vcard me-2"></i>Students
                 </a>
-                <a href="#" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
+                <a href="{{route('fees.index')}}" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
                     <i class="bi bi-cash-coin me-2"></i>Fees
                 </a>
                 <a href="{{route('books.index')}}" class="d-block py-2 px-4 text-white text-decoration-none hover-bg-indigo">
@@ -106,7 +106,7 @@
                 <a href="{{ route('student.index') }}" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
                     <i class="bi bi-person-vcard me-2"></i>Students
                 </a>
-                <a href="#" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
+                <a href="{{route('fees.index')}}" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">
                     <i class="bi bi-cash-coin me-2"></i>Fees
                 </a>
                 <a href="{{route('books.index')}}" class="nav-link text-white py-3 px-4 border-bottom border-indigo-400">

@@ -168,9 +168,9 @@
                             </a>
                         </div>
                         <div class="col-6 col-sm-4 col-md-2">
-                            <a href="#" class="btn btn-outline-success w-100 h-100 py-3 d-flex flex-column align-items-center">
+                            <a href="{{route('fees.create')}}" class="btn btn-outline-success w-100 h-100 py-3 d-flex flex-column align-items-center">
                                 <i class="bi bi-cash-coin fs-4 mb-2"></i>
-                                <small>Collect Fee</small>
+                                <small>Fee</small>
                             </a>
                         </div>
                         <div class="col-6 col-sm-4 col-md-2">

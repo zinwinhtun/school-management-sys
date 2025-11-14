@@ -31,10 +31,6 @@ class ClassTypeController extends Controller
             return back()->with('success', 'Class created successfully!');
         } catch (\Exception $e) {
             logger()->error($e->getMessage());
-            session()->flash('toastr', [
-                'type' => 'error',
-                'message' => $e->getMessage()
-            ]);
             return back()->with('error', $e->getMessage());
         }
     }

@@ -7,6 +7,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ClassTypeController;
+use App\Http\Controllers\FeeController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -65,8 +66,9 @@ Route::middleware('auth')->group(function () {
 
     //Fee Collection
     Route::prefix('fees')->group(function () {
-        Route::get('/', [ExpenseController::class, 'index'])->name('fees.index');
-        Route::post('/store', [ExpenseController::class, 'store'])->name('fees.store');
+        Route::get('/', [FeeController::class, 'index'])->name('fees.index');
+        Route::get('/create', [FeeController::class, 'create'])->name('fees.create');
+        Route::post('/store', [FeeController::class, 'store'])->name('fees.store');
     });
 });
 
