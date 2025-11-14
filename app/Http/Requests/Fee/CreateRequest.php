@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Requests\Fee;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class CreateRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'student_id'   => 'required|exists:students,id',
+            'class_id'     => 'required|exists:class_types,id',
+            'title'        => 'required|string|max:255',
+            'total_amount' => 'required|numeric|min:0',
+            'paid_amount'  => 'required|numeric|min:0',
+            'description'  => 'nullable|string',
+            'fee_type'     => 'required|in:collect,refund',
+        ];
+    }
+}

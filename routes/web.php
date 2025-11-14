@@ -3,9 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ClassTypeController;
+use App\Http\Controllers\FeeController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -57,7 +59,16 @@ Route::middleware('auth')->group(function () {
         Route::post('/sell/clear', [BookController::class, 'clearCart'])->name('books.clearCart');
         Route::get('/sell/remove/{index}', [BookController::class, 'removeFromSession'])->name('books.removeFromSession');
         Route::get('/sell-history', [BookController::class, 'sellHistory'])->name('books.sellHistory');
+    });
 
+    //Expense
+    Route::resource('expenses', ExpenseController::class);
+
+    //Fee Collection
+    Route::prefix('fees')->group(function () {
+        Route::get('/', [FeeController::class, 'index'])->name('fees.index');
+        Route::get('/create', [FeeController::class, 'create'])->name('fees.create');
+        Route::post('/store', [FeeController::class, 'store'])->name('fees.store');
     });
 });
 
