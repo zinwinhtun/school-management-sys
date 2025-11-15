@@ -67,8 +67,13 @@ Route::middleware('auth')->group(function () {
     //Fee Collection
     Route::prefix('fees')->group(function () {
         Route::get('/', [FeeController::class, 'index'])->name('fees.index');
-        Route::get('/create', [FeeController::class, 'create'])->name('fees.create');
-        Route::post('/store', [FeeController::class, 'store'])->name('fees.store');
+        Route::get('/collect', [FeeController::class, 'collectCreate'])->name('collect.create');
+        Route::post('/collect/store', [FeeController::class, 'collectStore'])->name('collect.store');
+        Route::get('/{id}',[FeeController::class,'detail'])->name('fees.detail');
+        Route::get('/{id}/collect',[FeeController::class , 'collect'])->name('fees.collect');
+        Route::post('/{id}/collect/store',[FeeController::class , 'addCollect'])->name('fees.collect.store');
+        Route::get('/{id}/refund',[FeeController::class , 'refund'])->name('refund.create');
+        Route::post('/{id}/refund',[FeeController::class , 'addRefund'])->name('refund.store');
     });
 });
 

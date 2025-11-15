@@ -18,9 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->decimal('total_amount', 12, 2);
             $table->decimal('paid_amount', 12, 2);
-            $table->text('description')->nullable();
             $table->boolean('full_paid')->default(false);
-            $table->boolean('is_refunded')->default(false);
             $table->timestamps();
 
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
