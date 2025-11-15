@@ -17,43 +17,45 @@
 
             <!-- Right Buttons -->
             <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2">
-                <a href="{{ route('fees.create') }}" class="btn btn-primary d-flex align-items-center fw-semibold">
-                    <i class="bi bi-plus-circle me-2"></i> Add New Fee
+                <a href="{{ route('collect.create') }}" class="btn btn-primary d-flex align-items-center fw-semibold">
+                    <i class="bi bi-plus-circle me-2"></i> Add New Fee 
                 </a>
             </div>
 
         </div>
     </div>
 
-
     <!-- Card -->
     <div class="card shadow-sm border-0 rounded-4">
         <div class="card-header bg-white border-0 py-3">
-            <div class="row align-items-center g-3">
+            <form action="{{ route('fees.index') }}" method="GET">
+                <div class="row align-items-center g-3">
 
-                <!-- Left side -->
-                <div class="col-12 col-md-7 col-lg-8">
-                    <span class="fw-semibold text-muted">Unpaid Fees – </span>
-                    <span class="fw-bold text-primary">{{ $fees->total() }}</span>
-                </div>
-
-                <!-- Right side (Search) -->
-                <div class="col-12 col-md-5 col-lg-4">
-                    <form action="{{ route('fees.index') }}" method="GET">
+                    <!-- Search -->
+                    <div class="col-12 col-md-6 col-lg-4">
                         <div class="input-group">
                             <input type="text"
                                 class="form-control rounded-start-pill"
-                                placeholder="Search student name..."
+                                placeholder="Search student name & class "
                                 name="query"
                                 value="{{ request('query') }}">
                             <button class="btn btn-primary rounded-end-pill px-3" type="submit">
                                 <i class="bi bi-search"></i>
                             </button>
                         </div>
-                    </form>
-                </div>
+                    </div>
 
-            </div>
+                    <!-- Status Filter -->
+                    <div class="col-12 col-md-4 col-lg-3">
+                        <select name="status" class="form-select rounded-pill" onchange="this.form.submit()">
+                            <option value="">All Status</option>
+                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="paid" {{ request('status') == 'paid' ? 'selected' : '' }}>Full Paid</option>
+                        </select>
+                    </div>
+
+                </div>
+            </form>
         </div>
 
         <!-- Table -->
@@ -65,9 +67,10 @@
                             <th>#</th>
                             <th class="text-start">Student</th>
                             <th>Class</th>
+                            <th>Title</th>
                             <th>Total</th>
                             <th>Paid</th>
-                            <th>Status</th>
+                            <th>Payment Status</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -79,91 +82,59 @@
 
                             <td class="text-start">
                                 {{ $fee->student->name ?? '-' }}<br>
-                                <small class="text-muted">{{ $fee->student->phone ?? '' }}</small>
                             </td>
 
                             <td>
                                 <span class="badge bg-info">{{ $fee->class->name ?? 'N/A' }}</span>
                             </td>
 
+                            <td>{{ $fee->title }}</td>
+
                             <td>
-                                <span class="fw-bold text-primary">{{ number_format($fee->total_amount) }} KS</span>
+                                <span class="fw-bold text-primary">{{ number_format($fee->total_amount) }} MMK</span>
                             </td>
 
                             <td>
-                                <span class="fw-bold text-success">{{ number_format($fee->paid_amount) }} KS</span>
+                                <span class="fw-bold text-success">{{ number_format($fee->paid_amount) }} MMK</span>
                             </td>
 
                             <td>
-                                <span class="badge bg-danger rounded-pill px-3">Unpaid</span>
+                                @if($fee->full_paid)
+                                <span class="badge bg-success">Done</span>
+                                @else
+                                <span class="badge bg-warning text-dark">Pending</span>
+                                @endif
                             </td>
 
                             <td>
                                 <div class="d-flex justify-content-center gap-1 flex-wrap">
 
-                                    <!-- Edit -->
-                                    <a href="#"
-                                        class="btn btn-outline-primary btn-sm">
-                                        <i class="bi bi-pencil-square"></i>
+                                    <a href="{{ route('fees.detail', $fee->id) }}"
+                                        class="btn btn-outline-info btn-sm" title="View">
+                                        <i class="bi bi-eye"></i>
                                     </a>
 
-                                    <!-- Delete -->
-                                    <button class="btn btn-outline-danger btn-sm"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#deleteFee{{ $fee->id }}">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
+                                    <a href="{{ route('fees.collect', $fee->id) }}"
+                                        class="btn btn-outline-success btn-sm" title="Collect">
+                                        <i class="bi bi-cash-coin"></i>
+                                    </a>
 
-                                    <!-- Delete Modal -->
-                                    <div class="modal fade" id="deleteFee{{ $fee->id }}" tabindex="-1">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content border-0 shadow rounded-4">
-
-                                                <div class="modal-header bg-danger text-white rounded-top-4">
-                                                    <h5 class="modal-title d-flex align-items-center">
-                                                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                                                        Confirm Delete
-                                                    </h5>
-                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                                                </div>
-
-                                                <div class="modal-body text-center py-4">
-                                                    <p class="fs-5 mb-3">Are you sure you want to delete this fee?</p>
-                                                    <h6 class="text-danger fw-bold mb-0">
-                                                        {{ $fee->student->name ?? '' }}
-                                                    </h6>
-                                                </div>
-
-                                                <div class="modal-footer border-0 justify-content-center pb-4">
-                                                    <button type="button"
-                                                        class="btn btn-outline-secondary px-4 rounded-3"
-                                                        data-bs-dismiss="modal">
-                                                        <i class="bi bi-x-circle me-1"></i> Cancel
-                                                    </button>
-
-                                                    <form action="#" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger px-4 rounded-3">
-                                                            <i class="bi bi-trash-fill me-1"></i> Delete
-                                                        </button>
-                                                    </form>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <a href="{{route('refund.create', $fee->id)}}"
+                                        class="btn btn-outline-primary btn-sm" title="Refund">
+                                        <i class="bi bi-shuffle"></i>
+                                    </a>
 
                                 </div>
                             </td>
+
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="7" class="text-center py-5">
+                            <td colspan="8" class="text-center py-5">
                                 <i class="bi bi-cash-stack display-4 text-muted d-block mb-3"></i>
-                                <h5 class="text-muted">No unpaid fees</h5>
+                                <h5 class="text-muted">No fees found</h5>
 
-                                <a href="{{ route('fees.create') }}"
+                                <a href="{{ route('collect.create') }}"
                                     class="btn btn-primary btn-sm">
                                     <i class="bi bi-plus-circle me-2"></i> Add First Fee
                                 </a>

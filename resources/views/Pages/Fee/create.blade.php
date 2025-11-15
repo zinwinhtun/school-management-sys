@@ -4,13 +4,13 @@
 <div class="container py-4">
     <div class="card shadow border-0 rounded-4 overflow-hidden">
 
-        <div class="card-header bg-primary text-white py-3">
+        <div class="card-header bg-indigo text-white py-3">
             <h3 class="mb-0 fw-bold">Fee Collect & Refund</h3>
         </div>
 
         <div class="card-body p-4">
 
-            <form action="{{ route('fees.store') }}" method="POST" class="row g-4">
+            <form action="{{ route('collect.store') }}" method="POST" class="row g-4">
                 @csrf
 
                 <!-- Student -->
@@ -30,9 +30,9 @@
                             <li class="mb-2">
                                 <div class="input-group">
                                     <input type="text" id="studentSearch" class="form-control rounded-start" placeholder="Search student...">
-                                    <button class="btn btn-outline-primary rounded-end" type="button" data-bs-toggle="modal" data-bs-target="#addStudentModal">
-                                        <i class="bi bi-plus-lg"></i>
-                                    </button>
+                                    <a href="{{route('student.create')}}"><button class="btn btn-outline-primary rounded-end" type="button" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                                            <i class="bi bi-plus-lg"></i>
+                                        </button></a>
                                 </div>
                             </li>
 
@@ -122,53 +122,28 @@
                     @enderror
                 </div>
 
-                <!-- Paid Amount -->
+                <!-- Amount -->
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Paid Amount</label>
-                    <input type="number" name="paid_amount" step="0.01"
-                        class="form-control rounded-3 shadow-sm @error('paid_amount') is-invalid @enderror"
-                        value="{{ old('paid_amount') }}"
-                        placeholder="Enter paid amount">
+                    <label class="form-label fw-semibold">Collect Amount</label>
+                    <input type="number" name="amount" step="0.01"
+                        class="form-control rounded-3 shadow-sm @error('amount') is-invalid @enderror"
+                        value="{{ old('amount') }}"
+                        placeholder="Enter collect amount">
 
-                    @error('paid_amount')
+                    @error('amount')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
-
-                <!-- Fee Type -->
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Fee Type</label>
-
-                    <div class="d-flex gap-4 mt-1">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="fee_type" value="collect"
-                                {{ old('fee_type') == 'collect' ? 'checked' : '' }}>
-                            <label class="form-check-label">Collect</label>
-                        </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="fee_type" value="refund"
-                                {{ old('fee_type') == 'refund' ? 'checked' : '' }}>
-                            <label class="form-check-label">Refund</label>
-                        </div>
-                    </div>
-
-                    @error('fee_type')
-                    <div class="text-danger small">{{ $message }}</div>
-                    @enderror
-                </div>
-
-
                 <!-- Description -->
                 <div class="col-md-12">
-                    <label class="form-label fw-semibold">Description</label>
-                    <textarea name="description"
-                        class="form-control rounded-3 shadow-sm @error('description') is-invalid @enderror"
+                    <label class="form-label fw-semibold">Note</label>
+                    <textarea name="note"
+                        class="form-control rounded-3 shadow-sm @error('note') is-invalid @enderror"
                         rows="3"
-                        placeholder="Optional...">{{ old('description') }}</textarea>
+                        placeholder="Optional...">{{ old('note') }}</textarea>
 
-                    @error('description')
+                    @error('note')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>

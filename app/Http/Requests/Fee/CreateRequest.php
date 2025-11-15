@@ -26,9 +26,8 @@ class CreateRequest extends FormRequest
             'class_id'     => 'required|exists:class_types,id',
             'title'        => 'required|string|max:255',
             'total_amount' => 'required|numeric|min:0',
-            'paid_amount'  => 'required|numeric|min:0',
-            'description'  => 'nullable|string',
-            'fee_type'     => 'required|in:collect,refund',
+            'amount'  => 'required|numeric|min:0',
+            'note'  => 'nullable|string',
         ];
     }
 }
