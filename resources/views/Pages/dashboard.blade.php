@@ -174,7 +174,7 @@
                             </a>
                         </div>
                         <div class="col-6 col-sm-4 col-md-2">
-                            <a href="#" class="btn btn-outline-info w-100 h-100 py-3 d-flex flex-column align-items-center">
+                            <a href="{{route('books.sellForm')}}" class="btn btn-outline-info w-100 h-100 py-3 d-flex flex-column align-items-center">
                                 <i class="bi bi-cart-plus fs-4 mb-2"></i>
                                 <small>Sell Book</small>
                             </a>
@@ -186,7 +186,7 @@
                             </a>
                         </div>
                         <div class="col-6 col-sm-4 col-md-2">
-                            <a href="#" class="btn btn-outline-danger w-100 h-100 py-3 d-flex flex-column align-items-center">
+                            <a href="{{route('reports.index')}}" class="btn btn-outline-danger w-100 h-100 py-3 d-flex flex-column align-items-center">
                                 <i class="bi bi-file-text fs-4 mb-2"></i>
                                 <small>See Reports</small>
                             </a>

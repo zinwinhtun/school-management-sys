@@ -42,7 +42,7 @@ class ExpenseRepository
 
             $journalEntry = JournalEntry::create([
                 'date' => now(),
-                'description' => "Expense added by user ID: $expenses->user_id",
+                'description' => "Expense added for : $expenses->title",
                 'reference_id' => $expenses->id,
                 'reference_type' => Expenses::class,
             ]);
@@ -91,7 +91,7 @@ class ExpenseRepository
             if ($journalEntry) {
                 // Update description if needed
                 $journalEntry->update([
-                    'description' => "Expense added by user ID: $expense->user_id",
+                    'description' => "Expense added for : $expense->title",
                 ]);
 
                 // Update journal postings

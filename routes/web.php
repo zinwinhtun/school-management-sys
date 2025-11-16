@@ -1,13 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FeeController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ClassTypeController;
-use App\Http\Controllers\FeeController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -69,11 +70,20 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [FeeController::class, 'index'])->name('fees.index');
         Route::get('/collect', [FeeController::class, 'collectCreate'])->name('collect.create');
         Route::post('/collect/store', [FeeController::class, 'collectStore'])->name('collect.store');
-        Route::get('/{id}',[FeeController::class,'detail'])->name('fees.detail');
-        Route::get('/{id}/collect',[FeeController::class , 'collect'])->name('fees.collect');
-        Route::post('/{id}/collect/store',[FeeController::class , 'addCollect'])->name('fees.collect.store');
-        Route::get('/{id}/refund',[FeeController::class , 'refund'])->name('refund.create');
-        Route::post('/{id}/refund',[FeeController::class , 'addRefund'])->name('refund.store');
+        Route::get('/{id}', [FeeController::class, 'detail'])->name('fees.detail');
+        Route::get('/{id}/collect', [FeeController::class, 'collect'])->name('fees.collect');
+        Route::post('/{id}/collect/store', [FeeController::class, 'addCollect'])->name('fees.collect.store');
+        Route::get('/{id}/refund', [FeeController::class, 'refund'])->name('refund.create');
+        Route::post('/{id}/refund', [FeeController::class, 'addRefund'])->name('refund.store');
+    });
+
+    //Report
+    Route::prefix('reports')->group(function () {
+        Route::get('/', [ReportController::class, 'index'])->name('reports.index');
+
+        Route::get('/cashbook', [ReportController::class, 'cashbook'])->name('reports.cashbook');
+        Route::get('/income', [ReportController::class, 'income'])->name('reports.income');
+        Route::get('/trial-balance', [ReportController::class, 'trial'])->name('reports.trial');
     });
 });
 
