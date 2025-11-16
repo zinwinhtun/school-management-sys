@@ -103,7 +103,7 @@ class BookController extends Controller
 
     public function sell(Request $request)
     {
-        $this->bookRepository->saveToDatabase();
+        $this->bookRepository->sell();
         return redirect()->route('books.index')->with('success', 'Books sold successfully!');
     }
 

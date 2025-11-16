@@ -2,8 +2,11 @@
 
 namespace App\Http\Repository;
 
-use App\Models\FeeHistory;
 use App\Models\Fees;
+use App\Models\Account;
+use App\Models\FeeHistory;
+use App\Models\JournalEntry;
+use App\Models\JournalPosting;
 use Illuminate\Support\Facades\DB;
 
 class FeeRepository
@@ -35,6 +38,33 @@ class FeeRepository
                 'note' => $data['note']
             ]);
 
+            //Accounting Logic 
+            $asset_account = Account::where('code', '1001')->first();
+            $revenue_account = Account::where('code', '4001')->first();
+
+            $journalEntry = JournalEntry::create([
+                'date' => now(),
+                'description' => "Fee collected from student ID: $fee->student_id",
+                'reference_id' => $fee->id,
+                'reference_type' => Fees::class,
+            ]);
+
+            // Debit Asset
+            JournalPosting::create([
+                'journal_entry_id' => $journalEntry->id,
+                'account_id' => $asset_account->id,
+                'debit' =>  $data['amount'],
+                'credit' => 0,
+            ]);
+
+            // Credit Revenue
+            JournalPosting::create([
+                'journal_entry_id' => $journalEntry->id,
+                'account_id' => $revenue_account->id,
+                'debit' => 0,
+                'credit' => $data['amount'],
+            ]);
+
             DB::commit();
             return $fee;
         } catch (\Exception $e) {
@@ -49,7 +79,7 @@ class FeeRepository
         try {
             DB::beginTransaction();
 
-            $fee = $this->model::findOrFail($id);
+            $fee = $this->model::with('student')->findOrFail($id);
             $newPaid = $fee->paid_amount + $data['amount'];
 
             $isFullPaid = $newPaid >= $fee->total_amount ? 1 : 0;
@@ -68,6 +98,33 @@ class FeeRepository
                 'amount' => $data['amount'],
                 'type' => 'collect',
                 'note' => $data['note']
+            ]);
+
+            //Accounting Logic 
+            $asset_account = Account::where('code', '1001')->first();
+            $revenue_account = Account::where('code', '4001')->first();
+
+            $journalEntry = JournalEntry::create([
+                'date' => now(),
+                'description' => "Fee collected from student ID: $fee->student_id",
+                'reference_id' => $fee->id,
+                'reference_type' => Fees::class,
+            ]);
+
+            // Debit Asset
+            JournalPosting::create([
+                'journal_entry_id' => $journalEntry->id,
+                'account_id' => $asset_account->id,
+                'debit' =>  $data['amount'],
+                'credit' => 0,
+            ]);
+
+            // Credit Revenue
+            JournalPosting::create([
+                'journal_entry_id' => $journalEntry->id,
+                'account_id' => $revenue_account->id,
+                'debit' => 0,
+                'credit' => $data['amount'],
             ]);
 
             DB::commit();
@@ -102,6 +159,33 @@ class FeeRepository
                 'amount' => $data['amount'],
                 'type' => 'refund',
                 'note' => $data['note']
+            ]);
+
+            //Accounting Logic 
+            $asset_account = Account::where('code', '1001')->first();
+            $liability_account = Account::where('code', '2002')->first();
+
+            $journalEntry = JournalEntry::create([
+                'date' => now(),
+                'description' => "Fee refunded from student ID: $fee->student_id",
+                'reference_id' => $fee->id,
+                'reference_type' => Fees::class,
+            ]);
+
+            // Debit Liability
+            JournalPosting::create([
+                'journal_entry_id' => $journalEntry->id,
+                'account_id' => $liability_account->id,
+                'debit' =>  $data['amount'],
+                'credit' => 0,
+            ]);
+
+            // Credit Asset
+            JournalPosting::create([
+                'journal_entry_id' => $journalEntry->id,
+                'account_id' => $asset_account->id,
+                'debit' => 0,
+                'credit' => $data['amount'],
             ]);
 
             DB::commit();
