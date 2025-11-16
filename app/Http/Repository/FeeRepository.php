@@ -38,13 +38,14 @@ class FeeRepository
                 'note' => $data['note']
             ]);
 
-            //Accounting Logic 
+            //Accounting Logic
+            $student = $fee->student; 
             $asset_account = Account::where('code', '1001')->first();
             $revenue_account = Account::where('code', '4001')->first();
 
             $journalEntry = JournalEntry::create([
                 'date' => now(),
-                'description' => "Fee collected from student ID: $fee->student_id",
+                'description' => "Fee collected from student Name: $student->name",
                 'reference_id' => $fee->id,
                 'reference_type' => Fees::class,
             ]);
@@ -101,12 +102,13 @@ class FeeRepository
             ]);
 
             //Accounting Logic 
+            $student = $fee->student;
             $asset_account = Account::where('code', '1001')->first();
             $revenue_account = Account::where('code', '4001')->first();
 
             $journalEntry = JournalEntry::create([
                 'date' => now(),
-                'description' => "Fee collected from student ID: $fee->student_id",
+                'description' => "Fee collected from student Name : $student->name",
                 'reference_id' => $fee->id,
                 'reference_type' => Fees::class,
             ]);
@@ -162,12 +164,13 @@ class FeeRepository
             ]);
 
             //Accounting Logic 
+            $student = $fee->student;
             $asset_account = Account::where('code', '1001')->first();
             $liability_account = Account::where('code', '2002')->first();
 
             $journalEntry = JournalEntry::create([
                 'date' => now(),
-                'description' => "Fee refunded from student ID: $fee->student_id",
+                'description' => "Fee refunded to student Name : $student->name",
                 'reference_id' => $fee->id,
                 'reference_type' => Fees::class,
             ]);

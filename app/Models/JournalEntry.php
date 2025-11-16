@@ -32,4 +32,7 @@ class JournalEntry extends Model
         return $this->postings->sum('debit') === $this->postings->sum('credit');
     }
 
+    protected $casts = [
+        'date' => 'datetime',
+    ];
 }

@@ -4,6 +4,7 @@ namespace App\Http\Repository;
 
 use App\Models\Book;
 use App\Models\Account;
+use App\Models\Student;
 use App\Models\BookSell;
 use App\Models\JournalEntry;
 use App\Models\JournalPosting;
@@ -46,7 +47,7 @@ class BookRepository
 
             $journalEntry = JournalEntry::create([
                 'date' => now(),
-                'description' => "Book Purchased with Book ID: $book->id",
+                'description' => "Book added for : $book->name",
                 'reference_id' => $book->id,
                 'reference_type' => Book::class,
             ]);
@@ -175,12 +176,13 @@ class BookRepository
                     }
 
                     //Accounting Logic 
+                    $student = Student::find($studentId);
                     $asset_account = Account::where('code', '1001')->first();
                     $revenue_account = Account::where('code', '4002')->first();
 
                     $journalEntry = JournalEntry::create([
                         'date' => now(),
-                        'description' => "Book sales for Student ID : $studentId",
+                        'description' => "Book sales for Student Name : $student->name",
                         'reference_id' => $bookSellHistory->id,
                         'reference_type' => BookSell::class,
                     ]);
