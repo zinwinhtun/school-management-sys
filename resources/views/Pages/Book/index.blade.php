@@ -17,10 +17,12 @@
             <!-- Right Buttons -->
             <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2">
                 {{-- Add New Book --}}
+                @if (auth()->user()->role == 'admin')
                 <button type="button" class="btn btn-primary d-flex align-items-center"
                     data-bs-toggle="modal" data-bs-target="#createBookModal">
                     <i class="bi bi-plus-circle me-2"></i> Add New Book
                 </button>
+                @endif
 
                 {{-- Sell Book --}}
                 <a href="{{ route('books.sellForm') }}" class="btn btn-primary d-flex align-items-center fw-semibold">
@@ -71,20 +73,23 @@
             <div class="table-responsive">
                 <table class="table align-middle table-hover mb-0 text-center">
                     <thead class="table-light">
-                        <tr>
+                        <tr class="text-start">
                             <th>#</th>
                             <th class="text-start">Name</th>
                             <th>Category</th>
                             <th>Class</th>
                             <th>Stock</th>
+                            <th>Price</th>
+                            @if (auth()->user()->role == 'admin')
                             <th class="text-center">Actions</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($books as $book)
-                        <tr>
+                        <tr class="text-start">
                             <td>{{ ($books->currentPage() - 1) * $books->perPage() + $loop->iteration }}</td>
-                            <td class="text-start">{{ $book->name }}</td>
+                            <td>{{ $book->name }}</td>
                             <td>{{ $book->category ?? '-' }}</td>
                             <td><span class="badge bg-info">{{ $book->classType->name ?? 'N/A' }}</span></td>
                             <td>
@@ -92,6 +97,8 @@
                                     {{ $book->stock }}
                                 </span>
                             </td>
+                            <td><span class="fw-bold text-muted">{{ number_format($book->sell_price) }} MMK</span></td>
+                            @if (auth()->user()->role == 'admin')
                             <td>
                                 <div class="d-flex justify-content-center gap-1 flex-wrap">
                                     <!-- Edit Button -->
@@ -140,6 +147,7 @@
 
                                 </div>
                             </td>
+                            @endif
                         </tr>
                         @empty
                         <tr>

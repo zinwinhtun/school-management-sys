@@ -9,6 +9,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ClassTypeController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -16,7 +17,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('Pages.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'staff'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile/show', [ProfileController::class, 'show'])->name('profile.show');
@@ -25,7 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //User Management
-    Route::resource('users', UserController::class);
+    Route::resource('users', UserController::class)->middleware('staff');
 
     //Class 
     Route::prefix('classes')->group(function () {
@@ -44,13 +45,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', [StudentController::class, 'store'])->name('student.store');
         Route::get('/edit/{id}', [StudentController::class, 'edit'])->name('student.edit');
         Route::put('/update/{id}', [StudentController::class, 'update'])->name('student.update');
-        Route::delete('/delete/{id}', [StudentController::class, 'destroy'])->name('student.destroy');
+        Route::delete('/delete/{id}', [StudentController::class, 'destroy'])->name('student.destroy')->middleware('staff');
     });
 
     //Book 
     Route::prefix('books')->group(function () {
         Route::get('', [BookController::class, 'index'])->name('books.index');
-        Route::post('/', [BookController::class, 'store'])->name('books.store');
+        Route::post('/', [BookController::class, 'store'])->name('books.store')->middleware('staff');
         Route::get('/{id}/edit', [BookController::class, 'edit'])->name('books.edit');
         Route::put('/{id}', [BookController::class, 'update'])->name('books.update');
         Route::delete('/{id}', [BookController::class, 'destroy'])->name('books.destroy');
@@ -63,7 +64,7 @@ Route::middleware('auth')->group(function () {
     });
 
     //Expense
-    Route::resource('expenses', ExpenseController::class);
+    Route::resource('expenses', ExpenseController::class)->middleware('staff');
 
     //Fee Collection
     Route::prefix('fees')->group(function () {
@@ -79,11 +80,18 @@ Route::middleware('auth')->group(function () {
 
     //Report
     Route::prefix('reports')->group(function () {
-        Route::get('/', [ReportController::class, 'index'])->name('reports.index');
+        Route::get('/', [ReportController::class, 'index'])->name('reports.index')->middleware('staff');
 
         Route::get('/cashbook', [ReportController::class, 'cashbook'])->name('reports.cashbook');
         Route::get('/income', [ReportController::class, 'income'])->name('reports.income');
         Route::get('/trial-balance', [ReportController::class, 'trial'])->name('reports.trial');
+    });
+
+    //Dashboard
+    Route::prefix('dashboard')->group(function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/fee-chart', [DashboardController::class, 'feeChart'])->name('dashboard.fee.chart');
+        Route::get('/class-chart', [DashboardController::class, 'classChart'])->name('dashboard.class.chart');
     });
 });
 

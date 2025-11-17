@@ -2,6 +2,7 @@ import 'bootstrap';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import toastr from 'toastr';
 import 'toastr/build/toastr.css';
+import { Chart, registerables } from 'chart.js';
 
 
 // Toastr configuration
@@ -23,6 +24,9 @@ toastr.options = {
     "hideMethod": "fadeOut"
 };
 
+Chart.register(...registerables);
+
 window.toastr = toastr;
+window.Chart = Chart;
 
 
