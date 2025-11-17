@@ -31,14 +31,14 @@
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
 
-                    <!-- Email -->
+                    <!-- Name -->
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input id="email" name="email" type="email" value="{{ old('email') }}"
+                        <label for="name" class="form-label">Name</label>
+                        <input id="name" name="name" type="name" value="{{ old('name') }}"
                             required autofocus
-                            class="form-control @error('email') is-invalid @enderror"
-                            placeholder="Enter your email">
-                        @error('email')
+                            class="form-control @error('name') is-invalid @enderror"
+                            placeholder="Enter your name">
+                        @error('name')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -63,13 +63,6 @@
                         </div>
                     </div>
 
-                    <!-- Remember Me -->
-                    <div class="mb-3 form-check">
-                        <input id="remember_me" type="checkbox" name="remember"
-                            class="form-check-input">
-                        <label for="remember_me" class="form-check-label">Remember me</label>
-                    </div>
-
                     <!-- Submit -->
                     <div class="d-grid gap-2 mt-4">
                         <button type="submit" class="btn btn-primary btn-lg">
@@ -78,15 +71,6 @@
                         </button>
                     </div>
                 </form>
-
-                <!-- Additional Links -->
-                <div class="text-center mt-4">
-                    @if (Route::has('password.request'))
-                        <a href="{{ route('password.request') }}" class="text-decoration-none">
-                            Forgot your password?
-                        </a>
-                    @endif
-                </div>
             </div>
         </div>
     </div>

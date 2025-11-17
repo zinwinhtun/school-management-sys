@@ -29,6 +29,7 @@
                         <span class="d-inline d-sm-none">Add</span>
                     </a>
 
+                    @if(auth()->user()->role === 'admin')
                     <!-- Add Class Button -->
                     <a href="#"
                         class="btn btn-primary d-flex align-items-center justify-content-center fw-semibold"
@@ -74,7 +75,7 @@
                             </div>
                         </div>
                     </div>
-
+                    @endif
                 </div>
             </div>
         </div>
@@ -163,6 +164,7 @@
                                             title="View Details">
                                             <i class="bi bi-eye"></i>
                                         </a>
+                                        @if(auth()->user()->role === 'admin')
                                         <!-- Delete Button -->
                                         <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteStudentModal{{ $student->id }}">
                                             <i class="bi bi-trash"></i>
@@ -190,7 +192,7 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                        @endif
                                     </div>
                                 </td>
                             </tr>

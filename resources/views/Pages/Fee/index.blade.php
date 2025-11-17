@@ -18,7 +18,7 @@
             <!-- Right Buttons -->
             <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2">
                 <a href="{{ route('collect.create') }}" class="btn btn-primary d-flex align-items-center fw-semibold">
-                    <i class="bi bi-plus-circle me-2"></i> Add New Fee 
+                    <i class="bi bi-plus-circle me-2"></i> Add New Fee
                 </a>
             </div>
 
@@ -114,10 +114,12 @@
                                         <i class="bi bi-eye"></i>
                                     </a>
 
-                                    <a href="{{ route('fees.collect', $fee->id) }}"
-                                        class="btn btn-outline-success btn-sm" title="Collect">
-                                        <i class="bi bi-cash-coin"></i>
-                                    </a>
+                                    @if(!$fee->full_paid)
+                                        <a href="{{ route('fees.collect', $fee->id) }}"
+                                            class="btn btn-outline-success btn-sm" title="Collect">
+                                            <i class="bi bi-cash-coin"></i>
+                                        </a>
+                                    @endif
 
                                     <a href="{{route('refund.create', $fee->id)}}"
                                         class="btn btn-outline-primary btn-sm" title="Refund">
