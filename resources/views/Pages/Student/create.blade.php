@@ -21,21 +21,44 @@
                         @enderror
                     </div>
 
-                    <!-- Class Select -->
-                    <div class="col-md-6">
-                        <label for="class" class="form-label fw-semibold">Class</label>
-                        <select name="class_id" id="class" class="form-select @error('class_id') is-invalid @enderror">
-                            <option value="">-- Select Class --</option>
-                            @foreach($classes as $class)
-                            <option value="{{ $class->id }}" {{ old('class_id') == $class->id ? 'selected' : '' }}>
-                                {{ $class->name }}
-                            </option>
+                    <!-- Class -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Class</label>
+
+                    <div class="dropdown w-100">
+                        <button class="btn btn-light w-100 text-start dropdown-toggle border rounded-3 py-2 shadow-sm 
+                            @error('class_id') is-invalid @enderror"
+                            type="button" id="classDropdown" data-bs-toggle="dropdown">
+
+                            <span id="selectedClass" class="{{ old('class_id') ? 'text-dark' : 'text-secondary' }}">
+                                {{ old('class_name', 'Select class') }}
+                            </span>
+                        </button>
+
+                        <ul class="dropdown-menu w-100 p-3 rounded-3 shadow" style="max-height: 260px; overflow-y: auto;">
+                            <li class="mb-2">
+                                <div class="input-group">
+                                    <input type="text" id="classSearch" class="form-control" placeholder="Search class...">
+                                </div>
+                            </li>
+
+                            @foreach ($classes as $class)
+                            <li>
+                                <a class="dropdown-item py-2 rounded-2 class-option" href="#"
+                                    data-id="{{ $class->id }}"
+                                    data-name="{{ $class->name }}">
+                                    {{ $class->name }}
+                                </a>
+                            </li>
                             @endforeach
-                        </select>
+                        </ul>
+
+                        <input type="hidden" name="class_id" id="class_id" value="{{ old('class_id') }}">
                         @error('class_id')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
+                </div>
 
                     <!-- Phone -->
                     <div class="col-md-6">
@@ -95,4 +118,48 @@
         </div>
     </div>
 </div>
+
 @endsection
+
+@push('scripts')
+<script>
+    //  Search filter
+    function setupSearch(inputId, itemClass) {
+        const input = document.getElementById(inputId);
+        input.addEventListener('keyup', function() {
+            const search = this.value.toLowerCase();
+            document.querySelectorAll('.' + itemClass).forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(search) ? '' : 'none';
+            });
+        });
+    }
+
+    //  Select item & set hidden input
+    function setupSelection(itemClass, inputId, displayId) {
+        document.querySelectorAll('.' + itemClass).forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const id = this.getAttribute('data-id');
+                const name = this.textContent;
+                document.getElementById(inputId).value = id;
+                document.getElementById(displayId).textContent = name;
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        setupSearch('classSearch', 'class-option');
+        setupSelection('class-option', 'class_id', 'selectedClass');
+    });
+
+    document.querySelectorAll('.class-option').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('class_id').value = this.dataset.id;
+            document.getElementById('selectedClass').textContent = this.dataset.name;
+            document.getElementById('selectedClass').classList.remove('text-secondary');
+        });
+    });
+</script>
+@endpush

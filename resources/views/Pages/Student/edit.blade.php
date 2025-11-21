@@ -23,20 +23,43 @@
                         @enderror
                     </div>
 
-                    <!-- Class Select -->
+                    <!-- Class -->
                     <div class="col-md-6">
-                        <label for="class" class="form-label fw-semibold">Class</label>
-                        <select name="class_id" id="class" class="form-select @error('class_id') is-invalid @enderror">
-                            <option value="">-- Select Class --</option>
-                            @foreach($classes as $class)
-                            <option value="{{ $class->id }}" {{ old('class_id', $student->class_id) == $class->id ? 'selected' : '' }}>
-                                {{ $class->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                        @error('class_id')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <label class="form-label fw-semibold">Class</label>
+
+                        <div class="dropdown w-100">
+                            <button class="btn btn-light w-100 text-start dropdown-toggle border rounded-3 py-2 shadow-sm 
+                            @error('class_id') is-invalid @enderror"
+                                type="button" id="classDropdown" data-bs-toggle="dropdown">
+
+                                <span id="selectedClass" class="text-dark">
+                                    {{ old('class_name', $student->class->name ?? 'Select class') }}
+                                </span>
+                            </button>
+
+                            <ul class="dropdown-menu w-100 p-3 rounded-3 shadow" style="max-height: 260px; overflow-y: auto;">
+                                <li class="mb-2">
+                                    <div class="input-group">
+                                        <input type="text" id="classSearch" class="form-control" placeholder="Search class...">
+                                    </div>
+                                </li>
+
+                                @foreach ($classes as $class)
+                                <li>
+                                    <a class="dropdown-item py-2 rounded-2 class-option" href="#"
+                                        data-id="{{ $class->id }}"
+                                        data-name="{{ $class->name }}">
+                                        {{ $class->name }}
+                                    </a>
+                                </li>
+                                @endforeach
+                            </ul>
+
+                            <input type="hidden" name="class_id" id="class_id" value="{{ old('class_id', $student->class_id) }}">
+                            @error('class_id')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
 
                     <!-- Phone -->
@@ -86,7 +109,7 @@
 
                 <!-- Submit Button -->
                 <div class="mt-4 text-end">
-                    <button type="submit" class="btn btn-success px-4">
+                    <button type="submit" class="btn btn-primary px-4">
                         <i class="bi bi-pencil-square me-1"></i> Update
                     </button>
                     <a href="{{ route('student.index') }}" class="btn btn-outline-secondary px-4 ms-2">
@@ -98,3 +121,73 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    //  Search filter
+    function setupSearch(inputId, itemClass) {
+        const input = document.getElementById(inputId);
+        input.addEventListener('keyup', function() {
+            const search = this.value.toLowerCase();
+            document.querySelectorAll('.' + itemClass).forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(search) ? '' : 'none';
+            });
+        });
+    }
+
+    //  Select item & set hidden input
+    function setupSelection(itemClass, inputId, displayId) {
+        document.querySelectorAll('.' + itemClass).forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const id = this.getAttribute('data-id');
+                const name = this.textContent;
+                document.getElementById(inputId).value = id;
+                document.getElementById(displayId).textContent = name;
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        setupSearch('classSearch', 'class-option');
+        setupSelection('class-option', 'class_id', 'selectedClass');
+    });
+
+    document.querySelectorAll('.class-option').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('class_id').value = this.dataset.id;
+            document.getElementById('selectedClass').textContent = this.dataset.name;
+            document.getElementById('selectedClass').classList.remove('text-secondary');
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        let selectedId = document.getElementById('class_id').value;
+
+        if (selectedId) {
+            let selectedItem = document.querySelector(`.class-option[data-id="${selectedId}"]`);
+            if (selectedItem) {
+                document.getElementById('selectedClass').textContent = selectedItem.dataset.name;
+                document.getElementById('selectedClass').classList.remove('text-secondary');
+                document.getElementById('selectedClass').classList.add('text-dark');
+            }
+        }
+
+        // dropdown click handler
+        document.querySelectorAll('.class-option').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                let id = this.dataset.id;
+                let name = this.dataset.name;
+
+                document.getElementById('class_id').value = id;
+                document.getElementById('selectedClass').textContent = name;
+                document.getElementById('selectedClass').classList.remove('text-secondary');
+                document.getElementById('selectedClass').classList.add('text-dark');
+            });
+        });
+    });
+</script>
+@endpush

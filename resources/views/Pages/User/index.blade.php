@@ -268,7 +268,7 @@
                 </div>
                 <div class="modal-footer border-0 bg-light rounded-bottom">
                     <button type="button" class="btn btn-lg btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-lg btn-warning text-dark rounded-pill px-4">
+                    <button type="submit" class="btn btn-lg btn-primary text-light rounded-pill px-4">
                         <i class="bi bi-check-circle me-2"></i>Update User
                     </button>
                 </div>

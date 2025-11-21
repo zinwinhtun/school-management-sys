@@ -11,8 +11,10 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ClassTypeController;
 use App\Http\Controllers\DashboardController;
 
-Route::get('/', function () {
-    return view('auth.login');
+Route::middleware('guest')->group(function () {
+    Route::get('/', function () {
+        return view('auth.login');
+    });
 });
 
 Route::get('/dashboard', function () {
@@ -88,8 +90,8 @@ Route::middleware('auth')->group(function () {
     });
 
     //Dashboard
-    Route::prefix('dashboard')->group(function () {
-        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::prefix('dashboard')->middleware('staff')->group(function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('staff');
         Route::get('/fee-chart', [DashboardController::class, 'feeChart'])->name('dashboard.fee.chart');
         Route::get('/class-chart', [DashboardController::class, 'classChart'])->name('dashboard.class.chart');
     });

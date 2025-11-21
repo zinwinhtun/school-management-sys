@@ -34,7 +34,7 @@ class StudentController extends Controller
             });
         }
 
-        $students = $query->paginate(5);
+        $students = $query->orderByDesc('id')->paginate(5);
 
         return view('Pages.Student.index', compact('students'));
     }
