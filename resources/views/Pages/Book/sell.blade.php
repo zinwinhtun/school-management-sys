@@ -20,44 +20,79 @@
 
                 <div class="d-flex flex-wrap gap-3 align-items-end">
 
-                    {{-- Student --}}
-                    <div class="flex-grow-1" style="min-width: 250px;">
-                        <label for="student_id" class="form-label fw-semibold">Student</label>
-                        <input type="text" class="form-control mb-2" id="studentSearch" placeholder="Search student name...">
-                        <select name="student_id" id="studentDropdown"
-                            class="form-select @error('student_id') is-invalid @enderror" required>
-                            <option value="">Select student...</option>
-                            @foreach ($students as $student)
-                            <option value="{{ $student->id }}"
-                                {{ session('student_id') == $student->id ? 'selected' : '' }}>
-                                {{ $student->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                        @error('student_id')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                    <!-- Student -->
+                    <div class="flex-grow-1 flex-shrink-1 min-w-200 col-12 col-md-6 col-lg-3">
+                        <label class="form-label fw-semibold">Student</label>
+                        <div class="dropdown w-100">
+                            <button class="btn btn-light w-100 text-start dropdown-toggle border rounded-3 py-2 shadow-sm
+                                @error('student_id') is-invalid @enderror"
+                                type="button" id="studentDropdownBtn" data-bs-toggle="dropdown">
+                                <span id="selectedStudent" class="{{ old('student_id') ? 'text-dark' : 'text-secondary' }}">
+                                    {{ old('student_name', 'Select student') }}
+                                </span>
+                            </button>
+
+                            <ul class="dropdown-menu w-100 p-3 rounded-3 shadow" style="max-height: 260px; overflow-y: auto;">
+                                <li class="mb-2">
+                                    <input type="text" id="studentSearch" class="form-control" placeholder="Search student...">
+                                </li>
+
+                                @foreach ($students as $student)
+                                <li>
+                                    <a class="dropdown-item py-2 rounded-2 student-option" href="#"
+                                        data-id="{{ $student->id }}"
+                                        data-name="{{ $student->name }}">
+                                        {{ $student->name }}
+                                    </a>
+                                </li>
+                                @endforeach
+                            </ul>
+
+                            <input type="hidden" name="student_id" id="student_id" value="{{ old('student_id') }}">
+                            @error('student_id')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
 
-                    {{-- Book --}}
-                    <div style="min-width: 200px; flex: 1 1 200px;">
-                        <label for="book_id" class="form-label fw-semibold">Book</label>
-                        <select name="book_id" id="book_id"
-                            class="form-select @error('book_id') is-invalid @enderror" required>
-                            <option value="">Select book...</option>
-                            @foreach ($books as $book)
-                            <option value="{{ $book->id }}" data-price="{{ $book->sell_price }}">
-                                {{ $book->name }} ({{ number_format($book->sell_price, 2) }} Ks)
-                            </option>
-                            @endforeach
-                        </select>
-                        @error('book_id')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                    <!-- Book -->
+                    <div class="flex-grow-1 flex-shrink-1 min-w-200 col-12 col-md-6 col-lg-3">
+                        <label class="form-label fw-semibold">Book</label>
+                        <div class="dropdown w-100">
+                            <button class="btn btn-light w-100 text-start dropdown-toggle border rounded-3 py-2 shadow-sm
+                                @error('book_id') is-invalid @enderror"
+                                type="button" id="bookDropdownBtn" data-bs-toggle="dropdown">
+                                <span id="selectedBook" class="text-secondary">
+                                    {{ old('book_name', 'Select book') }}
+                                </span>
+                            </button>
+
+                            <ul class="dropdown-menu w-100 p-3 rounded-3 shadow" style="max-height: 260px; overflow-y: auto;">
+                                <li class="mb-2">
+                                    <input type="text" id="bookSearch" class="form-control" placeholder="Search book...">
+                                </li>
+
+                                @foreach ($books as $book)
+                                <li>
+                                    <a class="dropdown-item py-2 rounded-2 book-option" href="#"
+                                        data-id="{{ $book->id }}"
+                                        data-name="{{ $book->name }}"
+                                        data-price="{{ $book->sell_price }}">
+                                        {{ $book->name }} ({{ number_format($book->sell_price, 2) }} Ks)
+                                    </a>
+                                </li>
+                                @endforeach
+                            </ul>
+
+                            <input type="hidden" name="book_id" id="book_id" value="{{ old('book_id') }}">
+                            @error('book_id')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
 
-                    {{-- Quantity --}}
-                    <div style="max-width: 120px; flex: 0 1 120px;">
+                    <!-- Quantity -->
+                    <div class="flex-shrink-0 min-w-100 col-12 col-sm-6 col-lg-2">
                         <label for="quantity" class="form-label fw-semibold">Qty</label>
                         <input type="number" name="quantity" id="quantity"
                             class="form-control @error('quantity') is-invalid @enderror"
@@ -67,15 +102,17 @@
                         @enderror
                     </div>
 
-                    {{-- Add Button --}}
-                    <div style="flex: 0 1 160px;">
+                    <!-- Add Button -->
+                    <div class="flex-shrink-0 min-w-120 col-12 col-sm-6 col-lg-2 d-grid">
                         <button type="submit"
                             class="btn btn-success w-100 py-2 shadow-sm fw-semibold d-flex justify-content-center align-items-center">
                             <i class="bi bi-plus-circle me-2"></i> Add Book
                         </button>
                     </div>
+
                 </div>
             </form>
+
 
 
             <hr class="my-4 text-muted">
@@ -172,46 +209,47 @@
     </div>
 </div>
 
-{{-- Student live search --}}
-<script>
-    document.getElementById('studentSearch')?.addEventListener('input', function() {
-        let filter = this.value.toLowerCase();
-        let options = document.querySelectorAll('#studentDropdown option');
-        options.forEach(opt => {
-            if (opt.text.toLowerCase().includes(filter) || opt.value === "") {
-                opt.style.display = '';
-            } else {
-                opt.style.display = 'none';
-            }
-        });
-    });
-
-    (function() {
-        'use strict'
-        var forms = document.querySelectorAll('.needs-validation')
-        Array.prototype.slice.call(forms).forEach(function(form) {
-            form.addEventListener('submit', function(event) {
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-                form.classList.add('was-validated')
-            }, false)
-        })
-    })()
-
-    // Student live search
-    document.getElementById('studentSearch')?.addEventListener('input', function() {
-        let filter = this.value.toLowerCase()
-        let options = document.querySelectorAll('#studentDropdown option')
-        options.forEach(opt => {
-            if (opt.text.toLowerCase().includes(filter) || opt.value === "") {
-                opt.style.display = ''
-            } else {
-                opt.style.display = 'none'
-            }
-        })
-    })
-</script>
-
 @endsection
+
+@push('scripts')
+<script>
+    // Search function
+    function setupSearch(inputId, itemClass) {
+        const input = document.getElementById(inputId);
+        input.addEventListener('keyup', function() {
+            const search = this.value.toLowerCase();
+            document.querySelectorAll('.' + itemClass).forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(search) ? '' : 'none';
+            });
+        });
+    }
+
+    // Select option function
+    function setupSelection(itemClass, inputId, displayId) {
+        document.querySelectorAll('.' + itemClass).forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                let id = this.dataset.id;
+                let name = this.dataset.name;
+
+                document.getElementById(inputId).value = id;
+                document.getElementById(displayId).textContent = name;
+                document.getElementById(displayId).classList.remove('text-secondary');
+                document.getElementById(displayId).classList.add('text-dark');
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // Student dropdown
+        setupSearch('studentSearch', 'student-option');
+        setupSelection('student-option', 'student_id', 'selectedStudent');
+
+        // Book dropdown
+        setupSearch('bookSearch', 'book-option');
+        setupSelection('book-option', 'book_id', 'selectedBook');
+    });
+</script>
+@endpush

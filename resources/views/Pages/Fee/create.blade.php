@@ -38,9 +38,11 @@
 
                             @foreach ($students as $student)
                             <li>
-                                <a class="dropdown-item py-2 rounded-2 student-option" href="#"
+                                <a class="dropdown-item student-option" href="#"
                                     data-id="{{ $student->id }}"
-                                    data-name="{{ $student->name }}">
+                                    data-name="{{ $student->name }}"
+                                    data-class-id="{{ $student->class_id }}"
+                                    data-class-name="{{ $student->classType->name }}">
                                     {{ $student->name }}
                                 </a>
                             </li>
@@ -53,7 +55,6 @@
                         @enderror
                     </div>
                 </div>
-
 
                 <!-- Class -->
                 <div class="col-md-6">
@@ -196,13 +197,13 @@
         });
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        setupSearch('studentSearch', 'student-option');
-        setupSearch('classSearch', 'class-option');
 
-        setupSelection('student-option', 'student_id', 'selectedStudent');
-        setupSelection('class-option', 'class_id', 'selectedClass');
-    });
+    setupSearch('studentSearch', 'student-option');
+    setupSearch('classSearch', 'class-option');
+
+    setupSelection('student-option', 'student_id', 'selectedStudent');
+    setupSelection('class-option', 'class_id', 'selectedClass');
+
 
     document.querySelectorAll('.student-option').forEach(item => {
         item.addEventListener('click', function(e) {
@@ -220,6 +221,42 @@
             document.getElementById('selectedClass').textContent = this.dataset.name;
             document.getElementById('selectedClass').classList.remove('text-secondary');
         });
+    });
+
+    // student selection
+    document.querySelectorAll('.student-option').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const studentId = this.dataset.id;
+            const studentName = this.dataset.name;
+            const studentClassId = this.dataset.classId || '';
+            const studentClassName = this.dataset.className || '';
+
+            // set selected student
+            document.getElementById('student_id').value = studentId;
+            document.getElementById('selectedStudent').textContent = studentName;
+            document.getElementById('selectedStudent').classList.remove('text-secondary');
+
+            // set related class
+            if (studentClassId) {
+                document.getElementById('class_id').value = studentClassId;
+                document.getElementById('selectedClass').textContent = studentClassName;
+                document.getElementById('classDropdown').classList.remove('text-secondary');
+
+                // disable class selection
+                document.getElementById('classDropdown').disabled = true;
+            } else {
+                document.getElementById('class_id').value = '';
+                document.getElementById('selectedClass').textContent = 'Select class';
+                document.getElementById('classDropdown').classList.add('text-secondary');
+                document.getElementById('classDropdown').disabled = false;
+            }
+        });
+    });
+
+    // if user clicks class dropdown manually (only possible if enabled)
+    document.getElementById('classDropdown').addEventListener('click', function() {
+        if (this.disabled) this.blur(); // prevent opening dropdown if disabled
     });
 </script>
 @endpush

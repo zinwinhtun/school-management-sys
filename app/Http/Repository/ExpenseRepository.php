@@ -115,9 +115,34 @@ class ExpenseRepository
 
     public function delete($id)
     {
+        DB::beginTransaction();
         try {
-            return $this->model::whereId($id)->delete();
+            $expense = $this->model::findOrFail($id);
+
+            // Accounting accounts
+            $asset_account = Account::where('code', '1001')->first();
+            $expenses_account = Account::where('code', '5002')->first();
+
+            // Find existing journal entry
+            $journalEntry = JournalEntry::where('reference_id', $expense->id)
+                ->where('reference_type', Expenses::class)
+                ->first();
+
+            if ($journalEntry) {
+                // Delete all related journal postings first
+                JournalPosting::where('journal_entry_id', $journalEntry->id)->delete();
+
+                // Delete journal entry itself
+                $journalEntry->delete();
+            }
+
+            // Delete the expense
+            $expense->delete();
+
+            DB::commit();
+            return true; // success
         } catch (\Exception $e) {
+            DB::rollback();
             return redirect()->route('expenses.index')->with('error', $e->getMessage());
         }
     }
